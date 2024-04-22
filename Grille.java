@@ -2,36 +2,39 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Grille extends JFrame {
-    private static final int GRID_SIZE = 9;    // Taille de la grille 9x9
+    private static final int GRID_SIZE = 9; // Taille de la grille 9x9
+    private static final int CELL_SIZE = 60; // Taille des cellules
     private static final int SUBGRID_SIZE = 3; // Taille des sous-grilles 3x3
-    private static final int CELL_SIZE = 60;   // Taille des cellules
-
     private JTextField[][] cells = new JTextField[GRID_SIZE][GRID_SIZE];
 
     public Grille() {
         Container pane = getContentPane();
         pane.setLayout(new GridLayout(GRID_SIZE, GRID_SIZE));
 
-        // Création de la grille de Sudoku avec des bordures pour séparer les sous-grilles
-        for (int row = 0; row < GRID_SIZE; row++) {
-            for (int col = 0; col < GRID_SIZE; col++) {
-                cells[row][col] = new JTextField();
-                cells[row][col].setHorizontalAlignment(JTextField.CENTER);
-                cells[row][col].setFont(new Font("Arial", Font.BOLD, 20));
-                cells[row][col].setPreferredSize(new Dimension(CELL_SIZE, CELL_SIZE));
+        // Définition des bordures pour séparer les sous-grilles
+        Border thickerBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
+        Border thinBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
 
-                // Ajout de bordures aux cellules pour distinguer les sous-grilles
-                if (row % SUBGRID_SIZE == 0) {
-                    cells[row][col].setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
+        // Construction de la grille de Sudoku
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                cells[i][j] = new JTextField();
+                cells[i][j].setEditable(false);
+                cells[i][j].setHorizontalAlignment(JTextField.CENTER);
+                cells[i][j].setFont(new Font("Arial", Font.BOLD, 20));
+                if (i % SUBGRID_SIZE == 0) {
+                    cells[i][j].setBorder(BorderFactory.createMatteBorder(2, 1, 1, 1, Color.BLACK));
+                } else if (j % SUBGRID_SIZE == 0) {
+                    cells[i][j].setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, Color.BLACK));
+                } else {
+                    cells[i][j].setBorder(thinBorder);
                 }
-                if (col % SUBGRID_SIZE == 0) {
-                    cells[row][col].setBorder(BorderFactory.createMatteBorder(0, 2, 0, 0, Color.BLACK));
-                }
-
-                pane.add(cells[row][col]);
+                pane.add(cells[i][j]);
             }
         }
 
+        // Ajustement des bordures externes de la grille
+        pane.setBorder(thickerBorder);
         pack();
         setTitle("Grille de Sudoku");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,11 +43,6 @@ public class Grille extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Exécuter le programme
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new Grille();
-            }
-        });
+        SwingUtilities.invokeLater(() -> new Grille());
     }
 }
