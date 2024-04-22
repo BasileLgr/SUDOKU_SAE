@@ -1,52 +1,62 @@
 import javax.swing.*;
-import java.awt.*;
 import javax.swing.border.Border;
-import javax.swing.border.BorderFactory;
+import javax.swing.border.MatteBorder;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Grille extends JFrame {
-    private static final int GRID_SIZE = 9; // Taille de la grille 9x9
-    private static final int CELL_SIZE = 60; // Taille des cellules
-    private static final int SUBGRID_SIZE = 3; // Taille des sous-grilles 3x3
-    private JTextField[][] cells = new JTextField[GRID_SIZE][GRID_SIZE];
+
+    private static final int TAILLE_GRILLE = 9;
+    private static final int TAILLE_SUBGRID = 3;
+    private static final int EPAISSEUR_BORDURE_INTERNE = 1;
+    private static final int EPAISSEUR_BORDURE_EXTERNE = 4;
+    private static final int TAILLE_CELLULE = 50;
+
+    private JTextField[][] cellules = new JTextField[TAILLE_GRILLE][TAILLE_GRILLE];
 
     public Grille() {
-        Container pane = getContentPane();
-        pane.setLayout(new GridLayout(GRID_SIZE, GRID_SIZE));
-
-        // Définition des bordures pour séparer les sous-grilles
-        Border thickerBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
-        Border thinBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
-
-        // Construction de la grille de Sudoku
-        for (int i = 0; i < GRID_SIZE; i++) {
-            for (int j = 0; j < GRID_SIZE; j++) {
-                cells[i][j] = new JTextField();
-                cells[i][j].setEditable(false);
-                cells[i][j].setHorizontalAlignment(JTextField.CENTER);
-                cells[i][j].setFont(new Font("Arial", Font.BOLD, 20));
-                // Ajouter des bordures pour différencier les sous-grilles 3x3
-                if ((i + 1) % SUBGRID_SIZE == 0 && (i + 1) != GRID_SIZE) {
-                    if ((j + 1) % SUBGRID_SIZE == 0 && (j + 1) != GRID_SIZE) {
-                        cells[i][j].setBorder(BorderFactory.createMatteBorder(1, 1, 2, 2, Color.BLACK));
-                    } else {
-                        cells[i][j].setBorder(BorderFactory.createMatteBorder(1, 1, 2, 1, Color.BLACK));
-                    }
-                } else if ((j + 1) % SUBGRID_SIZE == 0 && (j + 1) != GRID_SIZE) {
-                    cells[i][j].setBorder(BorderFactory.createMatteBorder(1, 1, 1, 2, Color.BLACK));
-                } else {
-                    cells[i][j].setBorder(thinBorder);
-                }
-                pane.add(cells[i][j]);
-            }
-        }
-
-        // Ajustement des bordures externes de la grille
-        pane.setBorder(thickerBorder);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle("Sudoku");
+        setLayout(new GridLayout(TAILLE_GRILLE, TAILLE_GRILLE));
+        initGrille();
         pack();
-        setTitle("Grille de Sudoku");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private void initGrille() {
+        for (int i = 0; i < TAILLE_GRILLE; i++) {
+            for (int j = 0; j < TAILLE_GRILLE; j++) {
+                final JTextField currentCell = new JTextField();
+                currentCell.setEditable(true);
+                currentCell.setHorizontalAlignment(JTextField.CENTER);
+                currentCell.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+                currentCell.setPreferredSize(new Dimension(TAILLE_CELLULE, TAILLE_CELLULE));
+
+                // Ajout d'un écouteur pour limiter l'entrée à un seul chiffre entre 1 et 9.
+                currentCell.addKeyListener(new KeyAdapter() {
+                    public void keyTyped(KeyEvent e) {
+                        if (currentCell.getText().length() >= 1 || !Character.isDigit(e.getKeyChar()) ||
+                                e.getKeyChar() == '0') { // Refuser si plus d'un chiffre ou si le chiffre est 0.
+                            e.consume();
+                        }
+                    }
+                });
+
+                Border border = new MatteBorder(
+                        i % TAILLE_SUBGRID == 0 && i != 0 ? EPAISSEUR_BORDURE_EXTERNE : EPAISSEUR_BORDURE_INTERNE,
+                        j % TAILLE_SUBGRID == 0 && j != 0 ? EPAISSEUR_BORDURE_EXTERNE : EPAISSEUR_BORDURE_INTERNE,
+                        i == TAILLE_GRILLE - 1 ? EPAISSEUR_BORDURE_EXTERNE : EPAISSEUR_BORDURE_INTERNE,
+                        j == TAILLE_GRILLE - 1 ? EPAISSEUR_BORDURE_EXTERNE : EPAISSEUR_BORDURE_INTERNE,
+                        Color.BLACK
+                );
+                currentCell.setBorder(border);
+                cellules[i][j] = currentCell;
+
+                add(currentCell);
+            }
+        }
     }
 
     public static void main(String[] args) {
