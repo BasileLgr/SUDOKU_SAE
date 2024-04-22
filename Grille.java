@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.border.Border;
+import javax.swing.border.BorderFactory;
 
 public class Grille extends JFrame {
     private static final int GRID_SIZE = 9; // Taille de la grille 9x9
@@ -22,10 +24,15 @@ public class Grille extends JFrame {
                 cells[i][j].setEditable(false);
                 cells[i][j].setHorizontalAlignment(JTextField.CENTER);
                 cells[i][j].setFont(new Font("Arial", Font.BOLD, 20));
-                if (i % SUBGRID_SIZE == 0) {
-                    cells[i][j].setBorder(BorderFactory.createMatteBorder(2, 1, 1, 1, Color.BLACK));
-                } else if (j % SUBGRID_SIZE == 0) {
-                    cells[i][j].setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, Color.BLACK));
+                // Ajouter des bordures pour différencier les sous-grilles 3x3
+                if ((i + 1) % SUBGRID_SIZE == 0 && (i + 1) != GRID_SIZE) {
+                    if ((j + 1) % SUBGRID_SIZE == 0 && (j + 1) != GRID_SIZE) {
+                        cells[i][j].setBorder(BorderFactory.createMatteBorder(1, 1, 2, 2, Color.BLACK));
+                    } else {
+                        cells[i][j].setBorder(BorderFactory.createMatteBorder(1, 1, 2, 1, Color.BLACK));
+                    }
+                } else if ((j + 1) % SUBGRID_SIZE == 0 && (j + 1) != GRID_SIZE) {
+                    cells[i][j].setBorder(BorderFactory.createMatteBorder(1, 1, 1, 2, Color.BLACK));
                 } else {
                     cells[i][j].setBorder(thinBorder);
                 }
