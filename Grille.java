@@ -2,16 +2,17 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Grille extends JFrame {
 
     private static final int TAILLE_GRILLE = 9;
-    private static final int TAILLE_SUBGRID = 3;
+    private static final int TAILLE_CELLULE = 50;
     private static final int EPAISSEUR_BORDURE_INTERNE = 1;
     private static final int EPAISSEUR_BORDURE_EXTERNE = 4;
-    private static final int TAILLE_CELLULE = 50;
 
     private JTextField[][] cellules = new JTextField[TAILLE_GRILLE][TAILLE_GRILLE];
 
@@ -20,6 +21,7 @@ public class Grille extends JFrame {
         setTitle("Sudoku");
         setLayout(new GridLayout(TAILLE_GRILLE, TAILLE_GRILLE));
         initGrille();
+        loadGridFromFile();
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -28,33 +30,51 @@ public class Grille extends JFrame {
     private void initGrille() {
         for (int i = 0; i < TAILLE_GRILLE; i++) {
             for (int j = 0; j < TAILLE_GRILLE; j++) {
-                final JTextField currentCell = new JTextField();
-                currentCell.setEditable(true);
+                JTextField currentCell = new JTextField();
+                currentCell.setEditable(false);
                 currentCell.setHorizontalAlignment(JTextField.CENTER);
                 currentCell.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
                 currentCell.setPreferredSize(new Dimension(TAILLE_CELLULE, TAILLE_CELLULE));
-
-                // Ajout d'un écouteur pour limiter l'entrée à un seul chiffre entre 1 et 9.
-                currentCell.addKeyListener(new KeyAdapter() {
-                    public void keyTyped(KeyEvent e) {
-                        if (currentCell.getText().length() >= 1 || !Character.isDigit(e.getKeyChar()) ||
-                                e.getKeyChar() == '0') { // Refuser si plus d'un chiffre ou si le chiffre est 0.
-                            e.consume();
-                        }
-                    }
-                });
-
                 Border border = new MatteBorder(
-                        i % TAILLE_SUBGRID == 0 && i != 0 ? EPAISSEUR_BORDURE_EXTERNE : EPAISSEUR_BORDURE_INTERNE,
-                        j % TAILLE_SUBGRID == 0 && j != 0 ? EPAISSEUR_BORDURE_EXTERNE : EPAISSEUR_BORDURE_INTERNE,
+                        i % 3 == 0 ? EPAISSEUR_BORDURE_EXTERNE : EPAISSEUR_BORDURE_INTERNE,
+                        j % 3 == 0 ? EPAISSEUR_BORDURE_EXTERNE : EPAISSEUR_BORDURE_INTERNE,
                         i == TAILLE_GRILLE - 1 ? EPAISSEUR_BORDURE_EXTERNE : EPAISSEUR_BORDURE_INTERNE,
                         j == TAILLE_GRILLE - 1 ? EPAISSEUR_BORDURE_EXTERNE : EPAISSEUR_BORDURE_INTERNE,
                         Color.BLACK
                 );
                 currentCell.setBorder(border);
                 cellules[i][j] = currentCell;
-
                 add(currentCell);
+            }
+        }
+    }
+
+    private void loadGridFromFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try (Scanner scanner = new Scanner(new FileInputStream(selectedFile))) {
+                int row = 0;
+                while (scanner.hasNextLine() && row < TAILLE_GRILLE) {
+                    String line = scanner.nextLine();
+                    parseAndFillRow(line, row);
+                    row++;
+                }
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(this, "Fichier non trouvé.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void parseAndFillRow(String line, int row) {
+        for (int col = 0; col < TAILLE_GRILLE; col++) {
+            char ch = line.length() > col ? line.charAt(col) : '0';
+            if (ch != '0') {
+                cellules[row][col].setText(String.valueOf(ch));
+            } else {
+                cellules[row][col].setText("");
             }
         }
     }
