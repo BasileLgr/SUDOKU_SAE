@@ -2,10 +2,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.*;
 
 public class Grille extends JFrame {
 
@@ -55,26 +52,21 @@ public class Grille extends JFrame {
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            try (Scanner scanner = new Scanner(new FileInputStream(selectedFile))) {
-                int row = 0;
-                while (scanner.hasNextLine() && row < TAILLE_GRILLE) {
-                    String line = scanner.nextLine();
-                    parseAndFillRow(line, row);
-                    row++;
+            try (DataInputStream dis = new DataInputStream(new FileInputStream(selectedFile))) {
+                for (int i = 0; i < TAILLE_GRILLE; i++) {
+                    int number = dis.readInt(); // Lecture d'un entier
+                    String numberString = String.format("%09d", number); // Conversion en chaîne de 9 chiffres, complétée par des zéros
+                    for (int j = 0; j < TAILLE_GRILLE; j++) {
+                        char ch = numberString.charAt(j);
+                        if (ch != '0') {
+                            cellules[i][j].setText(String.valueOf(ch));
+                        } else {
+                            cellules[i][j].setText("");
+                        }
+                    }
                 }
-            } catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(this, "Fichier non trouvé.", "Erreur", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
-    private void parseAndFillRow(String line, int row) {
-        for (int col = 0; col < TAILLE_GRILLE; col++) {
-            char ch = line.length() > col ? line.charAt(col) : '0';
-            if (ch != '0') {
-                cellules[row][col].setText(String.valueOf(ch));
-            } else {
-                cellules[row][col].setText("");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Erreur lors de la lecture du fichier.", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
