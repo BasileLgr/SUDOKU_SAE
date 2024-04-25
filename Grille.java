@@ -6,7 +6,6 @@ import java.io.*;
 import java.awt.event.*;
 
 public class Grille extends JFrame {
-
     private static final int TAILLE_GRILLE = 9;
     private static final int TAILLE_CELLULE = 50;
     private static final int EPAISSEUR_BORDURE_INTERNE = 1;
@@ -20,7 +19,7 @@ public class Grille extends JFrame {
 
     public Grille() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setTitle("Sudoku");
+        setTitle("Editeur de Sudoku");
         setLayout(new BorderLayout());
         initGrille();
         initButtons();
@@ -33,6 +32,8 @@ public class Grille extends JFrame {
         JPanel gridPanel = new JPanel(new GridLayout(TAILLE_GRILLE, TAILLE_GRILLE));
         for (int i = 0; i < TAILLE_GRILLE; i++) {
             for (int j = 0; j < TAILLE_GRILLE; j++) {
+                final int row = i; // Final variable for inner class use
+                final int col = j; // Final variable for inner class use
                 JTextField currentCell = new JTextField();
                 currentCell.setEditable(true);
                 currentCell.setHorizontalAlignment(JTextField.CENTER);
@@ -46,11 +47,40 @@ public class Grille extends JFrame {
                         Color.BLACK
                 );
                 currentCell.setBorder(border);
+                currentCell.addKeyListener(new KeyAdapter() {
+                    public void keyTyped(KeyEvent e) {
+                        char input = e.getKeyChar();
+                        if (!Character.isDigit(input) || input == '0' || currentCell.getText().length() > 0 && !Character.isISOControl(input)) {
+                            e.consume();
+                        } else if (Character.isDigit(input) && !isValidInput(row, col, input)) {
+                            e.consume();
+                        }
+                    }
+                });
                 gridPanel.add(currentCell);
                 cellules[i][j] = currentCell;
             }
         }
         add(gridPanel, BorderLayout.CENTER);
+    }
+
+    private boolean isValidInput(int row, int col, char input) {
+        for (int i = 0; i < TAILLE_GRILLE; i++) {
+            if (cellules[row][i].getText().equals(String.valueOf(input)) ||
+                    cellules[i][col].getText().equals(String.valueOf(input))) {
+                return false;
+            }
+        }
+        int gridRowStart = (row / 3) * 3;
+        int gridColStart = (col / 3) * 3;
+        for (int i = gridRowStart; i < gridRowStart + 3; i++) {
+            for (int j = gridColStart; j < gridColStart + 3; j++) {
+                if (cellules[i][j].getText().equals(String.valueOf(input))) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void initButtons() {
@@ -85,7 +115,7 @@ public class Grille extends JFrame {
                             char ch = numberString.charAt(j);
                             if (ch != '0') {
                                 cellules[i][j].setText(String.valueOf(ch));
-                                cellules[i][j].setEditable(false);
+                                cellules[i][j].setEditable(true);
                             } else {
                                 cellules[i][j].setText("");
                                 cellules[i][j].setEditable(true);
@@ -113,11 +143,7 @@ public class Grille extends JFrame {
                     StringBuilder sb = new StringBuilder();
                     for (int j = 0; j < TAILLE_GRILLE; j++) {
                         String value = cellules[i][j].getText();
-                        if (value.isEmpty()) {
-                            sb.append("0");
-                        } else {
-                            sb.append(value);
-                        }
+                        sb.append(value.isEmpty() ? "0" : value);
                     }
                     dos.writeInt(Integer.parseInt(sb.toString()));
                 }
@@ -126,26 +152,6 @@ public class Grille extends JFrame {
                 JOptionPane.showMessageDialog(this, "Erreur lors de l'enregistrement du fichier.", "Erreur d'exportation", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }
-
-    // Vérification de la validité de l'entrée en fonction des règles du Sudoku
-    private boolean isValidInput(int row, int col, char input) {
-        for (int i = 0; i < TAILLE_GRILLE; i++) {
-            if (cellules[row][i].getText().equals(String.valueOf(input)) ||
-                    cellules[i][col].getText().equals(String.valueOf(input))) {
-                return false; // Vérifie la ligne et la colonne
-            }
-        }
-        int gridRowStart = (row / 3) * 3;
-        int gridColStart = (col / 3) * 3;
-        for (int i = gridRowStart; i < gridRowStart + 3; i++) {
-            for (int j = gridColStart; j < gridColStart + 3; j++) {
-                if (cellules[i][j].getText().equals(String.valueOf(input))) {
-                    return false; // Vérifie le bloc 3x3
-                }
-            }
-        }
-        return true;
     }
 
     public static void main(String[] args) {
