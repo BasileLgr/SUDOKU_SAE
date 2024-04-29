@@ -6,16 +6,16 @@ import java.io.*;
 import java.awt.event.*;
 
 public class Grille extends JFrame {
-    private static final int TAILLE_GRILLE = 9;
+    protected static final int TAILLE_GRILLE = 9;
     private static final int TAILLE_CELLULE = 50;
     private static final int EPAISSEUR_BORDURE_INTERNE = 1;
     private static final int EPAISSEUR_BORDURE_EXTERNE = 4;
 
-    private JTextField[][] cellules = new JTextField[TAILLE_GRILLE][TAILLE_GRILLE];
-    private JPanel panelButtons = new JPanel();
-    private JButton openButton = new JButton("Ouvrir une nouvelle grille");
-    private JButton exportButton = new JButton("Exporter la grille");
-    private JButton quitButton = new JButton("Quitter");
+    protected JTextField[][] cellules = new JTextField[TAILLE_GRILLE][TAILLE_GRILLE];
+    protected JPanel panelButtons = new JPanel();
+    protected JButton openButton = new JButton("Ouvrir une nouvelle grille");
+    protected JButton exportButton = new JButton("Exporter la grille");
+    protected JButton quitButton = new JButton("Quitter");
 
     public Grille() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -32,8 +32,8 @@ public class Grille extends JFrame {
         JPanel gridPanel = new JPanel(new GridLayout(TAILLE_GRILLE, TAILLE_GRILLE));
         for (int i = 0; i < TAILLE_GRILLE; i++) {
             for (int j = 0; j < TAILLE_GRILLE; j++) {
-                final int row = i; // Final variable for inner class use
-                final int col = j; // Final variable for inner class use
+                final int row = i;
+                final int col = j;
                 JTextField currentCell = new JTextField();
                 currentCell.setEditable(true);
                 currentCell.setHorizontalAlignment(JTextField.CENTER);
@@ -64,7 +64,7 @@ public class Grille extends JFrame {
         add(gridPanel, BorderLayout.CENTER);
     }
 
-    private boolean isValidInput(int row, int col, char input) {
+    protected boolean isValidInput(int row, int col, char input) {
         for (int i = 0; i < TAILLE_GRILLE; i++) {
             if (cellules[row][i].getText().equals(String.valueOf(input)) ||
                     cellules[i][col].getText().equals(String.valueOf(input))) {
@@ -83,7 +83,7 @@ public class Grille extends JFrame {
         return true;
     }
 
-    private void initButtons() {
+    protected void initButtons() {
         panelButtons.setLayout(new GridLayout(3, 1, 5, 5));
         panelButtons.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -97,34 +97,43 @@ public class Grille extends JFrame {
         add(panelButtons, BorderLayout.EAST);
     }
 
+    protected JPanel getPanelButtons() {
+        return panelButtons;
+    }
+
+    protected JButton getOpenButton() {
+        return openButton;
+    }
+
+    protected JButton getQuitButton() {
+        return quitButton;
+    }
+
+    protected JTextField[][] getCellules() {
+        return cellules;
+    }
+
     private void loadGridFromFile() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            if (!selectedFile.getName().endsWith(".gri")) {
-                JOptionPane.showMessageDialog(this, "Veuillez ouvrir un fichier avec l'extension .gri.", "Erreur de Format", JOptionPane.ERROR_MESSAGE);
-                loadGridFromFile();
-            } else {
-                try (DataInputStream dis = new DataInputStream(new FileInputStream(selectedFile))) {
-                    for (int i = 0; i < TAILLE_GRILLE; i++) {
-                        int number = dis.readInt();
-                        String numberString = String.format("%09d", number);
-                        for (int j = 0; j < TAILLE_GRILLE; j++) {
-                            char ch = numberString.charAt(j);
-                            if (ch != '0') {
-                                cellules[i][j].setText(String.valueOf(ch));
-                                cellules[i][j].setEditable(true);
-                            } else {
-                                cellules[i][j].setText("");
-                                cellules[i][j].setEditable(true);
-                            }
+            try (DataInputStream dis = new DataInputStream(new FileInputStream(selectedFile))) {
+                for (int i = 0; i < TAILLE_GRILLE; i++) {
+                    int number = dis.readInt();
+                    String numberString = String.format("%09d", number);
+                    for (int j = 0; j < TAILLE_GRILLE; j++) {
+                        char ch = numberString.charAt(j);
+                        if (ch != '0') {
+                            cellules[i][j].setText(String.valueOf(ch));
+                        } else {
+                            cellules[i][j].setText("");
                         }
                     }
-                } catch (IOException e) {
-                    JOptionPane.showMessageDialog(this, "Erreur lors de la lecture du fichier.", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Erreur lors de la lecture du fichier.", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -135,7 +144,6 @@ public class Grille extends JFrame {
         fileChooser.setDialogTitle("Enregistrer la grille");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Grille files (*.gri)", "gri"));
         int userSelection = fileChooser.showSaveDialog(this);
-
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToSave = fileChooser.getSelectedFile();
             try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(fileToSave))) {
