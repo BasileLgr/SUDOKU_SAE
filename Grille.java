@@ -32,8 +32,6 @@ public class Grille extends JFrame {
         JPanel gridPanel = new JPanel(new GridLayout(TAILLE_GRILLE, TAILLE_GRILLE));
         for (int i = 0; i < TAILLE_GRILLE; i++) {
             for (int j = 0; j < TAILLE_GRILLE; j++) {
-                final int row = i;
-                final int col = j;
                 JTextField currentCell = new JTextField();
                 currentCell.setEditable(true);
                 currentCell.setHorizontalAlignment(JTextField.CENTER);
@@ -49,10 +47,22 @@ public class Grille extends JFrame {
                 currentCell.setBorder(border);
                 currentCell.addKeyListener(new KeyAdapter() {
                     public void keyTyped(KeyEvent e) {
+                        JTextField source = (JTextField) e.getSource();
                         char input = e.getKeyChar();
-                        if (!Character.isDigit(input) || input == '0' || currentCell.getText().length() > 0 && !Character.isISOControl(input)) {
+                        int row = -1, col = -1;
+                        for (int k = 0; k < TAILLE_GRILLE; k++) {
+                            for (int l = 0; l < TAILLE_GRILLE; l++) {
+                                if (cellules[k][l] == source) {
+                                    row = k;
+                                    col = l;
+                                    break;
+                                }
+                            }
+                            if (row != -1) break;
+                        }
+                        if (!Character.isDigit(input) || input == '0' || source.getText().length() >= 1 && !Character.isISOControl(input)) {
                             e.consume();
-                        } else if (Character.isDigit(input) && !isValidInput(row, col, input)) {
+                        } else if (!isValidInput(row, col, input)) {
                             e.consume();
                         }
                     }
@@ -95,22 +105,6 @@ public class Grille extends JFrame {
         panelButtons.add(exportButton);
         panelButtons.add(quitButton);
         add(panelButtons, BorderLayout.EAST);
-    }
-
-    protected JPanel getPanelButtons() {
-        return panelButtons;
-    }
-
-    protected JButton getOpenButton() {
-        return openButton;
-    }
-
-    protected JButton getQuitButton() {
-        return quitButton;
-    }
-
-    protected JTextField[][] getCellules() {
-        return cellules;
     }
 
     private void loadGridFromFile() {
