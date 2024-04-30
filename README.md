@@ -1,22 +1,52 @@
-# Projet Sudoku
+# Éditeur de Sudoku
 
-Ce projet consiste en le développement de deux programmes en Java pour la création et la résolution de grilles de Sudoku, ainsi que la gestion de ces grilles via une interface graphique utilisateur.
-
-## Description
-
-Le projet est divisé en deux parties principales :
-1. **Créateur de Grille** : Un programme qui permet aux utilisateurs de concevoir des grilles de Sudoku, de les modifier et de les sauvegarder.
-2. **Solveur de Sudoku** : Un programme qui permet de charger des grilles de Sudoku et de les résoudre, soit automatiquement, soit manuellement par l'utilisateur.
+Ce projet est un éditeur de Sudoku développé en Java, utilisant Swing pour l'interface graphique. Il permet de créer, charger, modifier, et sauvegarder des grilles de Sudoku.
 
 ## Fonctionnalités
 
-- **Édition de Grille** : Créer et modifier des grilles de Sudoku avec possibilité de sauvegarde.
-- **Résolution Automatique et Manuelle** : Charger une grille et choisir entre une résolution manuelle ou automatique.
-- **Interface Graphique Utilisateur** : Utilisation de Swing pour une interaction intuitive avec les grilles de Sudoku.
-- **Validation des Entrées** : Assurer que les entrées respectent les règles du Sudoku.
+- **Création de grille**: L'utilisateur peut créer une nouvelle grille de Sudoku vierge.
+- **Chargement de grille**: L'utilisateur peut charger une grille depuis un fichier.
+- **Modification de grille**: L'utilisateur peut entrer des chiffres dans la grille.
+- **Sauvegarde de grille**: L'utilisateur peut sauvegarder la grille actuelle dans un fichier.
 
-## Technologies Utilisées
+## Technologies utilisées
 
-- **Java** : Langage de programmation pour le développement des fonctionnalités.
-- **Swing** : Bibliothèque graphique pour l'interface utilisateur.
-- **Gitea** : Serveur pour le versionnage et la collaboration du code.
+- Java
+- Swing pour l'interface utilisateur
+
+## Démarrage rapide
+
+### Prérequis
+
+- Java 11 ou supérieur
+
+### Installation
+
+Clonez ce dépôt sur votre machine locale en utilisant:
+
+```bash
+git clone https://github.com/votre-username/votre-repo.git
+```
+
+## Compilation et Exécution
+
+Utilisez le Makefile fourni pour compiler et exécuter l'application :
+
+```bash
+make createur # Pour lancer l'application en mode éditeur
+make joueur   # Pour lancer l'application en mode joueur (pas encore implémenté)
+```
+
+
+## Nettoyage
+
+Pour nettoyer le répertoire de travail des fichiers de classe et autres fichiers générés :
+
+```bash
+make clean
+```
+
+## Auteurs
+
+- Dimitri Solar
+- Basile Legrelle
