@@ -9,20 +9,25 @@ SRC = GrilleFrame.java GridPanel.java ButtonPanel.java Cell.java FileHandler.jav
 # Define the Java classes generated from the source files (targets)
 CLASS = $(SRC:.java=.class)
 
-# Default target: build all classes
-all: $(CLASS)
+# Default target: do nothing
+all:
+	@echo "Specify 'createur' or 'joueur' to make specific builds."
 
 # Rule for compiling java source files to class files
 %.class: %.java
 	$(JCC) $<
 
-# Target to run the main class
-run: all
+# Target to compile and run the main class for creator mode
+createur: GrilleFrame.class
 	java GrilleFrame
 
-# Target to clean the workspace: remove all compiled class files
+# Target to run the main class for player mode (currently does nothing)
+joueur:
+	@echo "Player mode is not yet implemented."
+
+# Target to clean the workspace: remove all compiled class files including inner classes
 clean:
-	rm -f *.class
+	rm -f *.class *$*.class
 
 # Phony targets to ensure that make treats the targets as commands not files
-.PHONY: all run clean
+.PHONY: all createur joueur clean
