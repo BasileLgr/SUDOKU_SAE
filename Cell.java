@@ -4,12 +4,12 @@ import javax.swing.border.MatteBorder;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class Cell extends JTextField implements KeyListener {
-    private int row, col; // Positions de la cellule dans la grille
-    private GridPanel gridPanel; // Référence au panneau de grille contenant cette cellule
+    protected int row, col; // Changer l'accès de private à protected
+    protected GridPanel gridPanel; // Changer l'accès de private à protected
 
     public Cell(int row, int col, GridPanel gridPanel) {
         this.row = row;

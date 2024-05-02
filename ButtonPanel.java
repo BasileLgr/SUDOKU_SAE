@@ -2,6 +2,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.BorderFactory;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 public class ButtonPanel extends JPanel {
     private JButton openButton = new JButton("Ouvrir une nouvelle grille");
@@ -19,5 +20,17 @@ public class ButtonPanel extends JPanel {
         add(openButton);
         add(exportButton);
         add(quitButton);
+    }
+
+    public void addSolveButton(ActionListener listener) {
+        JButton solveButton = new JButton("Résoudre");
+        solveButton.addActionListener(listener);
+        add(solveButton);
+    }
+
+    public void addVerifyButton(ActionListener listener) {
+        JButton verifyButton = new JButton("Vérifier");
+        verifyButton.addActionListener(listener);
+        add(verifyButton);
     }
 }

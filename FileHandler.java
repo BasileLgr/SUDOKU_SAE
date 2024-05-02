@@ -12,7 +12,8 @@ import javax.swing.JTextField;
 public class FileHandler {
     public static void loadGridFromFile(GridPanel gridPanel) {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Grille files (*.gri)", "gri"));
         int result = fileChooser.showOpenDialog(null); // Use null for parent
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
@@ -38,7 +39,7 @@ public class FileHandler {
 
     public static void exportGridToFile(GridPanel gridPanel) {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fileChooser.setDialogTitle("Enregistrer la grille");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Grille files (*.gri)", "gri"));
         int userSelection = fileChooser.showSaveDialog(null);
