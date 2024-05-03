@@ -1,20 +1,13 @@
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import java.io.File;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.DataOutputStream;
-import java.io.FileOutputStream;
-import javax.swing.JTextField;
-
+import javax.swing.*;
+import java.io.*;
+import java.awt.Color;  // Assurez-vous que l'importation est là
 
 public class FileHandler {
-    public static void loadGridFromFile(GridPanel gridPanel) {
+    public static void loadGridFromFile(GridPanel gridPanel, boolean lockCells) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Grille files (*.gri)", "gri"));
-        int result = fileChooser.showOpenDialog(null); // Use null for parent
+        int result = fileChooser.showOpenDialog(null);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try (DataInputStream dis = new DataInputStream(new FileInputStream(selectedFile))) {
@@ -24,10 +17,13 @@ public class FileHandler {
                     for (int j = 0; j < GridPanel.TAILLE_GRILLE; j++) {
                         char ch = numberString.charAt(j);
                         JTextField cell = gridPanel.getCellules()[i][j];
-                        if (ch != '0') {
-                            cell.setText(String.valueOf(ch));
+                        cell.setText((ch != '0') ? String.valueOf(ch) : "");
+                        if (ch != '0' && lockCells) {
+                            cell.setEditable(false);
+                            cell.setBackground(new Color(230, 230, 230)); // Plus clair que Color.GRAY
                         } else {
-                            cell.setText("");
+                            cell.setEditable(true);
+                            cell.setBackground(Color.WHITE);
                         }
                     }
                 }

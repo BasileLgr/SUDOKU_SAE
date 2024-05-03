@@ -1,5 +1,5 @@
-import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -13,13 +13,18 @@ public class ButtonPanel extends JPanel {
         setLayout(new GridLayout(3, 1, 5, 5));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        openButton.addActionListener(e -> FileHandler.loadGridFromFile(gridPanel));
+        // Listener added in the constructor
+        openButton.addActionListener(e -> FileHandler.loadGridFromFile(gridPanel, false));
         exportButton.addActionListener(e -> FileHandler.exportGridToFile(gridPanel));
         quitButton.addActionListener(e -> System.exit(0));
 
         add(openButton);
         add(exportButton);
         add(quitButton);
+    }
+
+    public void addOpenButtonListener(ActionListener listener) {
+        openButton.addActionListener(listener);
     }
 
     public void addSolveButton(ActionListener listener) {

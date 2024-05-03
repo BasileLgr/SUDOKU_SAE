@@ -14,6 +14,9 @@ public class GrilleFrame extends JFrame {
         gridPanel = new GridPanel();
         buttonPanel = new ButtonPanel(gridPanel);
 
+        // Use the new method to add listener
+        buttonPanel.addOpenButtonListener(e -> FileHandler.loadGridFromFile(gridPanel, false));
+
         add(gridPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.EAST);
 

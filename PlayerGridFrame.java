@@ -15,7 +15,10 @@ public class PlayerGridFrame extends JFrame {
         gridPanel = new PlayerGrid();
         buttonPanel = new ButtonPanel(gridPanel);
 
-        // Ajoute des boutons spécifiques au mode joueur
+        // Use the method from ButtonPanel to add the action listener
+        buttonPanel.addOpenButtonListener(e -> FileHandler.loadGridFromFile(gridPanel, true));
+
+        // Add other buttons specific to player mode
         buttonPanel.addSolveButton(e -> solveGrid());
         buttonPanel.addVerifyButton(e -> verifyGrid());
 
@@ -31,7 +34,9 @@ public class PlayerGridFrame extends JFrame {
         Solver solver = new Solver(gridPanel);
         boolean solved = solver.solve();
         if (!solved) {
-            System.out.println("Aucune solution possible.");
+            JOptionPane.showMessageDialog(this, "Aucune solution possible.", "Résolution", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "La grille a été résolue!", "Résolution Réussie", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
