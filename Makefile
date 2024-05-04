@@ -1,10 +1,10 @@
 # Define the Java compiler
 JCC = javac
 
-# Define the source files for different modes
-COMMON_SRC = GridPanel.java Cell.java Solver.java FileHandler.java
-CREATOR_SRC = GrilleFrame.java ButtonPanel.java
-PLAYER_SRC = PlayerGridFrame.java PlayerGrid.java PlayerCell.java
+# Define the source files
+COMMON_SRC = GridPanel.java Cell.java Solver.java FileHandler.java ButtonPanel.java SudokuFrame.java
+CREATOR_SRC = $(COMMON_SRC)
+PLAYER_SRC = PlayerGrid.java PlayerCell.java $(COMMON_SRC)
 
 # Define class files
 COMMON_CLASS = $(COMMON_SRC:.java=.class)
@@ -17,11 +17,11 @@ all:
 %.class: %.java
 	$(JCC) $<
 
-createur: $(COMMON_CLASS) $(CREATOR_CLASS)
-	java GrilleFrame
+createur: $(CREATOR_CLASS)
+	java SudokuFrame
 
-joueur: $(COMMON_CLASS) $(PLAYER_CLASS)
-	java PlayerGridFrame
+joueur: $(PLAYER_CLASS)
+	java SudokuFrame player
 
 clean:
 	rm -f *.class *$*.class
