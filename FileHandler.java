@@ -4,6 +4,7 @@ import java.awt.Color;  // Assurez-vous que l'importation est là
 
 public class FileHandler {
     public static void loadGridFromFile(GridPanel gridPanel, boolean lockCells) {
+        PlayerCell[][] cellules = gridPanel.getCellules();
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Grille files (*.gri)", "gri"));
