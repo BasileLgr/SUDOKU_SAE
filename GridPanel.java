@@ -27,32 +27,38 @@ public class GridPanel extends JPanel {
     public boolean isValidInput(int row, int col, char input) {
         String inputStr = String.valueOf(input);
 
+        // Vérification de l'unicité dans la cellule actuelle
+        if (cellules[row][col].getText().contains(inputStr)) {
+            return false; // Le chiffre est déjà présent dans la cellule
+        }
+
         // Vérification des contraintes du Sudoku
-        // Check row for duplicates
+        // Vérifie la ligne
         for (int i = 0; i < TAILLE_GRILLE; i++) {
             if (cellules[row][i].getText().contains(inputStr) && i != col) {
-                return false; // Duplicate found in the row
+                return false; // Doublon trouvé dans la ligne
             }
         }
 
-        // Check column for duplicates
+        // Vérifie la colonne
         for (int j = 0; j < TAILLE_GRILLE; j++) {
             if (cellules[j][col].getText().contains(inputStr) && j != row) {
-                return false; // Duplicate found in the column
+                return false; // Doublon trouvé dans la colonne
             }
         }
 
-        // Check the 3x3 grid for duplicates
+        // Vérifie le bloc 3x3
         int gridRowStart = (row / 3) * 3;
         int gridColStart = (col / 3) * 3;
         for (int i = gridRowStart; i < gridRowStart + 3; i++) {
             for (int j = gridColStart; j < gridColStart + 3; j++) {
                 if (cellules[i][j].getText().contains(inputStr) && (i != row || j != col)) {
-                    return false; // Duplicate found in the 3x3 block
+                    return false; // Doublon trouvé dans le bloc 3x3
                 }
             }
         }
 
-        return true; // No duplicates, input is valid
+        return true; // Aucun doublon, l'entrée est valide
     }
+
 }

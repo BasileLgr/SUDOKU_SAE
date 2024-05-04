@@ -35,25 +35,45 @@ public class PlayerCell extends JTextField {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                char input = e.getKeyChar();
-                String currentText = getText();
-                if (!Character.isDigit(input) || input == '0') {
-                    e.consume();
-                } else if (isEditable() && !currentText.contains(String.valueOf(input)) && currentText.length() < 4) {
-                    if (gridPanel.isValidInput(row, col, input)) {
-                        updateTextDisplay(currentText + input);
-                        e.consume();
-                    }
-                }
-                e.consume();
+                handleKeyTyped(e);
             }
         });
     }
 
+    private void handleKeyTyped(KeyEvent e) {
+        char input = e.getKeyChar();
+        String currentText = getText().replace(String.valueOf(input), ""); // Enlève l'entrée courante pour la validation
+        if (!Character.isDigit(input) || input == '0') {
+            e.consume(); // Ignore les entrées non numériques et le zéro
+        } else {
+            if (gridPanel instanceof PlayerGrid) {
+                if (currentText.length() < 4 && gridPanel.isValidInput(row, col, input)) {
+                    updateTextDisplay(currentText + input);
+                    e.consume();
+                } else {
+                    e.consume();
+                }
+            } else {
+                if (currentText.isEmpty() && gridPanel.isValidInput(row, col, input)) {
+                    setText(String.valueOf(input));
+                    e.consume();
+                } else {
+                    e.consume();
+                }
+            }
+        }
+    }
+
+
     private void updateTextDisplay(String newText) {
-        setText(newText);
-        int len = newText.length();
-        switch (len) {
+        if (newText.length() <= 4) { // Ensure that no more than 4 digits can be displayed
+            setText(newText);
+            adjustFont(newText.length());
+        }
+    }
+
+    private void adjustFont(int textLength) {
+        switch (textLength) {
             case 1:
             case 2:
                 setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
@@ -65,7 +85,7 @@ public class PlayerCell extends JTextField {
                 setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12)); // Smaller font size for four digits
                 break;
             default:
-                setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20)); // Default case
+                setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20)); // Default case if somehow more than 4 digits
         }
     }
 
