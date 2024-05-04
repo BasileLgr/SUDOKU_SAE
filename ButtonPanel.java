@@ -14,7 +14,6 @@ public class ButtonPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Listener added in the constructor
-        openButton.addActionListener(e -> FileHandler.loadGridFromFile(gridPanel, false));
         exportButton.addActionListener(e -> FileHandler.exportGridToFile(gridPanel));
         quitButton.addActionListener(e -> System.exit(0));
 
