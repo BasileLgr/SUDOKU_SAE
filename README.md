@@ -20,8 +20,3 @@ Pour exécuter l'application, suivez les étapes suivantes :
    - `make createur` : Pour lancer l'application en mode éditeur.
    - `make joueur` : Pour lancer l'application en mode joueur.
 4. Profitez de jouer ou de créer des grilles de Sudoku !
-
-## Configuration Requise
-
-- Java 8 ou version ultérieure
-- Un environnement de développement Java (par exemple, Eclipse, IntelliJ IDEA)
