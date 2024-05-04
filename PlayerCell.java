@@ -7,11 +7,20 @@ import java.awt.Color;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 
+/**
+ * La classe <code>PlayerCell</code> étend <code>JTextField</code> pour représenter une cellule de jeu dans une grille de Sudoku.
+ */
 public class PlayerCell extends JTextField {
     private int row, col;
     private GridPanel gridPanel;
     private boolean isStartingCell = false;
 
+    /**
+     * Constructeur pour créer une nouvelle instance de <code>PlayerCell</code>.
+     * @param row la ligne de la cellule
+     * @param col la colonne de la cellule
+     * @param gridPanel le panneau de la grille contenant cette cellule
+     */
     public PlayerCell(int row, int col, GridPanel gridPanel) {
         super();
         this.row = row;
@@ -64,9 +73,8 @@ public class PlayerCell extends JTextField {
         }
     }
 
-
     private void updateTextDisplay(String newText) {
-        if (newText.length() <= 4) { // Ensure that no more than 4 digits can be displayed
+        if (newText.length() <= 4) { // Pas plus de 4 chiffres
             setText(newText);
             adjustFont(newText.length());
         }
@@ -82,13 +90,17 @@ public class PlayerCell extends JTextField {
                 setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
                 break;
             case 4:
-                setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12)); // Smaller font size for four digits
+                setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12)); // Changement taille police pour 4 chiffre
                 break;
             default:
-                setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20)); // Default case if somehow more than 4 digits
+                setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20)); //
         }
     }
 
+    /**
+     * Définit si cette cellule est une cellule de départ.
+     * @param isStarting true si la cellule est une cellule de départ, false sinon
+     */
     public void setStartingCell(boolean isStarting) {
         isStartingCell = isStarting;
         setEditable(!isStarting);

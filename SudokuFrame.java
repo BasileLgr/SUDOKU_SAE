@@ -1,10 +1,17 @@
 import javax.swing.*;
 import java.awt.BorderLayout;
 
+/**
+ * La classe <code>SudokuFrame</code> représente la fenêtre principale de l'application Sudoku.
+ */
 public class SudokuFrame extends JFrame {
     private GridPanel gridPanel;
     private ButtonPanel buttonPanel;
 
+    /**
+     * Constructeur pour créer une nouvelle instance de <code>SudokuFrame</code>.
+     * @param isPlayerMode true si le mode joueur est activé, false sinon
+     */
     public SudokuFrame(boolean isPlayerMode) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle(isPlayerMode ? "Mode Joueur - Sudoku" : "Éditeur de Sudoku");
@@ -46,7 +53,6 @@ public class SudokuFrame extends JFrame {
         return true;
     }
 
-
     private boolean areAllSumsValid() {
         return areRowsValid() && areColumnsValid() && areBoxesValid();
     }
@@ -74,7 +80,7 @@ public class SudokuFrame extends JFrame {
         return true;
     }
 
-    // Generic method to check a row, column, or box
+    // Méthode générique pour vérifier une ligne, une colonne ou une boîte
     private boolean isPartValid(int startRow, int startCol, int rowIncrement, int colIncrement) {
         boolean[] seen = new boolean[GridPanel.TAILLE_GRILLE];
         for (int i = 0; i < GridPanel.TAILLE_GRILLE; i++) {
@@ -111,8 +117,11 @@ public class SudokuFrame extends JFrame {
         }
     }
 
+    /**
+     * Point d'entrée de l'application.
+     * @param args les arguments de la ligne de commande
+     */
     public static void main(String[] args) {
-        // Vous pouvez modifier cette partie pour accepter un argument qui spécifie le mode
         boolean isPlayerMode = args.length > 0 && args[0].equals("player");
         SwingUtilities.invokeLater(() -> new SudokuFrame(isPlayerMode));
     }

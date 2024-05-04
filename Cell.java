@@ -7,10 +7,21 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * La classe <code>Cell</code> étend <code>JTextField</code> pour créer un champ de texte personnalisé
+ * avec des fonctionnalités spécifiques pour une grille de saisie, et implémente l'interface <code>KeyListener</code>
+ * pour gérer les événements de touche.
+ */
 public class Cell extends JTextField implements KeyListener {
-    protected int row, col; // Changer l'accès de private à protected
-    protected GridPanel gridPanel; // Changer l'accès de private à protected
+    protected int row, col; // Indices de la ligne et de la colonne de la cellule dans la grille
+    protected GridPanel gridPanel; // Référence au panneau de grille contenant la cellule
 
+    /**
+     * Constructeur pour la cellule.
+     * @param row la ligne de la cellule dans la grille
+     * @param col la colonne de la cellule dans la grille
+     * @param gridPanel le panneau de la grille contenant cette cellule
+     */
     public Cell(int row, int col, GridPanel gridPanel) {
         this.row = row;
         this.col = col;
@@ -35,6 +46,11 @@ public class Cell extends JTextField implements KeyListener {
         addKeyListener(this);  // Ajoute cette instance comme KeyListener
     }
 
+    /**
+     * Méthode pour gérer les événements de type caractère.
+     * Consume l'événement si le caractère n'est pas un chiffre valide ou si la cellule ne peut pas accepter le caractère.
+     * @param e l'événement de touche
+     */
     @Override
     public void keyTyped(KeyEvent e) {
         char input = e.getKeyChar();
@@ -45,11 +61,21 @@ public class Cell extends JTextField implements KeyListener {
         }
     }
 
+    /**
+     * Méthode pour gérer les événements de pression de touche.
+     * Actuellement non utilisée.
+     * @param e l'événement de touche
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         // Non utilisé, mais requis par l'interface
     }
 
+    /**
+     * Méthode pour gérer les événements de relâchement de touche.
+     * Actuellement non utilisée.
+     * @param e l'événement de touche
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         // Non utilisé, mais requis par l'interface

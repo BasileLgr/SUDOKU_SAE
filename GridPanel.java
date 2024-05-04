@@ -1,16 +1,25 @@
 import javax.swing.JPanel;
 import java.awt.GridLayout;
-import javax.swing.JTextField;
 
+/**
+ * La classe <code>GridPanel</code> étend <code>JPanel</code> pour représenter une grille de Sudoku.
+ */
 public class GridPanel extends JPanel {
     protected static final int TAILLE_GRILLE = 9; // Taille standard d'une grille de Sudoku
     protected PlayerCell[][] cellules = new PlayerCell[TAILLE_GRILLE][TAILLE_GRILLE];
 
+    /**
+     * Constructeur pour créer une nouvelle instance de <code>GridPanel</code>.
+     * Initialise la grille avec un layout de grille 9x9 et initialise chaque cellule.
+     */
     public GridPanel() {
         setLayout(new GridLayout(TAILLE_GRILLE, TAILLE_GRILLE)); // Utilisation de GridLayout pour la grille 9x9
         initGrille();
     }
 
+    /**
+     * Initialise la grille en créant et ajoutant chaque cellule à la grille.
+     */
     protected void initGrille() {
         for (int i = 0; i < TAILLE_GRILLE; i++) {
             for (int j = 0; j < TAILLE_GRILLE; j++) {
@@ -20,10 +29,21 @@ public class GridPanel extends JPanel {
         }
     }
 
+    /**
+     * Obtient la matrice de cellules de cette grille.
+     * @return la matrice de cellules
+     */
     public PlayerCell[][] getCellules() {
         return cellules;
     }
 
+    /**
+     * Vérifie si une entrée est valide pour la cellule spécifiée selon les règles du Sudoku.
+     * @param row la ligne de la cellule
+     * @param col la colonne de la cellule
+     * @param input le caractère à vérifier
+     * @return true si l'entrée est valide, false sinon
+     */
     public boolean isValidInput(int row, int col, char input) {
         String inputStr = String.valueOf(input);
 
@@ -60,5 +80,4 @@ public class GridPanel extends JPanel {
 
         return true; // Aucun doublon, l'entrée est valide
     }
-
 }

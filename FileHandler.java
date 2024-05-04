@@ -2,9 +2,18 @@ import javax.swing.*;
 import java.io.*;
 import java.awt.Color;  // Assurez-vous que l'importation est là
 
+/**
+ * La classe <code>FileHandler</code> gère le chargement et l'exportation de grilles de jeu à partir de fichiers.
+ */
 public class FileHandler {
+
+    /**
+     * Charge une grille depuis un fichier sélectionné par l'utilisateur.
+     * @param gridPanel le panneau de la grille où afficher les données chargées
+     * @param lockCells si vrai, verrouille les cellules non vides après le chargement
+     */
     public static void loadGridFromFile(GridPanel gridPanel, boolean lockCells) {
-        PlayerCell[][] cellules = gridPanel.getCellules();
+        JTextField[][] cellules = gridPanel.getCellules();
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Grille files (*.gri)", "gri"));
@@ -34,6 +43,10 @@ public class FileHandler {
         }
     }
 
+    /**
+     * Exporte la grille actuelle dans un fichier sélectionné par l'utilisateur.
+     * @param gridPanel le panneau de la grille à exporter
+     */
     public static void exportGridToFile(GridPanel gridPanel) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
