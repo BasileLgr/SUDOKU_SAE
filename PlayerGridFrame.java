@@ -31,14 +31,21 @@ public class PlayerGridFrame extends JFrame {
     }
 
     private void solveGrid() {
+        long startTime = System.nanoTime();  // Début de la mesure du temps
+
         Solver solver = new Solver(gridPanel);
         boolean solved = solver.solve();
+
+        long endTime = System.nanoTime();  // Fin de la mesure du temps
+        long duration = (endTime - startTime) / 1_000_000;  // Convertir en millisecondes
+
         if (!solved) {
             JOptionPane.showMessageDialog(this, "Aucune solution possible.", "Résolution", JOptionPane.ERROR_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "La grille a été résolue!", "Résolution Réussie", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "La grille a été résolue en " + duration + " ms!", "Résolution Réussie", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
 
     private void verifyGrid() {
         if (isGridFull() && areAllSumsValid()) {
