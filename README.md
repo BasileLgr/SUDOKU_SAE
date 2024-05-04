@@ -1,52 +1,27 @@
-# Éditeur de Sudoku
+# Sudoku Solver
 
-Ce projet est un éditeur de Sudoku développé en Java, utilisant Swing pour l'interface graphique. Il permet de créer, charger, modifier, et sauvegarder des grilles de Sudoku.
+Ce projet est une application Java qui permet de jouer et de résoudre des grilles de Sudoku. L'application offre deux modes : le mode joueur pour jouer au Sudoku et le mode éditeur pour créer et résoudre des grilles.
 
 ## Fonctionnalités
 
-- **Création de grille**: L'utilisateur peut créer une nouvelle grille de Sudoku vierge.
-- **Chargement de grille**: L'utilisateur peut charger une grille depuis un fichier.
-- **Modification de grille**: L'utilisateur peut entrer des chiffres dans la grille.
-- **Sauvegarde de grille**: L'utilisateur peut sauvegarder la grille actuelle dans un fichier.
+- **Mode Joueur :** Permet aux utilisateurs de jouer au Sudoku en remplissant les cases vides.
+- **Mode Éditeur :** Permet aux utilisateurs de créer et de résoudre des grilles de Sudoku.
+- **Résolution automatique :** L'application peut résoudre les grilles de Sudoku automatiquement grâce à un algorithme de résolution.
+- **Vérification de la grille :** L'application peut vérifier si la grille actuelle est correctement résolue.
+- **Exportation et importation de grilles :** Les grilles peuvent être exportées et importées depuis des fichiers.
 
-## Technologies utilisées
+## Utilisation
 
-- Java
-- Swing pour l'interface utilisateur
+Pour exécuter l'application, suivez les étapes suivantes :
 
-## Démarrage rapide
+1. Clonez ce dépôt sur votre machine locale.
+2. Ouvrez le projet dans votre environnement de développement Java.
+3. Exécutez le Makefile en utilisant l'une des commandes suivantes :
+   - `make createur` : Pour lancer l'application en mode éditeur.
+   - `make joueur` : Pour lancer l'application en mode joueur.
+4. Profitez de jouer ou de créer des grilles de Sudoku !
 
-### Prérequis
+## Configuration Requise
 
-- Java 11 ou supérieur
-
-### Installation
-
-Clonez ce dépôt sur votre machine locale en utilisant:
-
-```bash
-git clone https://github.com/votre-username/votre-repo.git
-```
-
-## Compilation et Exécution
-
-Utilisez le Makefile fourni pour compiler et exécuter l'application :
-
-```bash
-make createur # Pour lancer l'application en mode éditeur
-make joueur   # Pour lancer l'application en mode joueur (pas encore implémenté)
-```
-
-
-## Nettoyage
-
-Pour nettoyer le répertoire de travail des fichiers de classe et autres fichiers générés :
-
-```bash
-make clean
-```
-
-## Auteurs
-
-- Dimitri Solar
-- Basile Legrelle
+- Java 8 ou version ultérieure
+- Un environnement de développement Java (par exemple, Eclipse, IntelliJ IDEA)
